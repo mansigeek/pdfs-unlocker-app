@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'phosphor-react-native';
 
+import { AppHeader } from '@/components/pdf-unlocker/AppHeader';
 import { SUPPORT_EMAIL } from '@/constants/config';
 import { screen, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
@@ -16,6 +17,7 @@ export default function PrivacyPolicyScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
       <Stack.Screen options={{ headerShown: false }} />
+      <AppHeader />
       <Pressable onPress={() => router.back()} style={[styles.back, { paddingHorizontal: screen.paddingX }]}>
         <ArrowLeft size={18} color={theme.primary} weight="bold" />
         <Text style={[styles.backText, { color: theme.primary }]}>Back</Text>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingVertical: screen.paddingTop,
+    paddingVertical: spacing.sm,
   },
   backText: { fontSize: 14, fontWeight: '600' },
   title: {

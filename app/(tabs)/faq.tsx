@@ -12,7 +12,7 @@ export default function FaqTabScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <AppHeader title="FAQ" subtitle="Common questions and answers" />
+      <AppHeader />
       <ScreenScroll>
         <Faq />
       </ScreenScroll>

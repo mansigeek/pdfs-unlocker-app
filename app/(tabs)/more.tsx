@@ -16,7 +16,7 @@ export default function MoreTabScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <AppHeader title="More" subtitle="Settings and legal" />
+      <AppHeader />
       <ScreenScroll>
         <Text style={[styles.sectionTitle, { color: theme.foreground }]}>App settings</Text>
         <Pressable

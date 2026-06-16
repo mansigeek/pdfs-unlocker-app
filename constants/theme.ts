@@ -1,6 +1,6 @@
 /** Trust Blue palette — matches Unlock-PDF-main globals.css */
 
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 function hsl(h: number, s: number, l: number): string {
   s /= 100;
@@ -11,7 +11,7 @@ function hsl(h: number, s: number, l: number): string {
     const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
     return Math.round(255 * color)
       .toString(16)
-      .padStart(2, '0');
+      .padStart(2, "0");
   };
   return `#${f(0)}${f(8)}${f(4)}`;
 }
@@ -39,7 +39,7 @@ export const lightTheme: AppTheme = {
   card: hsl(0, 0, 100),
   cardForeground: hsl(240, 10, 4),
   primary: hsl(224, 100, 50),
-  primaryForeground: '#ffffff',
+  primaryForeground: "#ffffff",
   primaryHover: hsl(224, 100, 40),
   secondary: hsl(240, 5, 96),
   muted: hsl(240, 5, 96),
@@ -56,7 +56,7 @@ export const darkTheme: AppTheme = {
   card: hsl(240, 6, 6),
   cardForeground: hsl(0, 0, 98),
   primary: hsl(217, 91, 60),
-  primaryForeground: '#ffffff',
+  primaryForeground: "#ffffff",
   primaryHover: hsl(217, 91, 50),
   secondary: hsl(240, 4, 10),
   muted: hsl(240, 4, 10),
@@ -99,32 +99,33 @@ export const textSpacing = {
   /** Eyebrow / label → heading */
   labelToTitle: spacing.sm,
   /** Between stacked text blocks in a card */
-  block: spacing.sm,
+  block: spacing.md,
   /** Between major UI blocks (icon, card section, button) */
   section: spacing.md,
 };
 
 export const Fonts = Platform.select({
   ios: {
-    sans: 'system-ui',
-    serif: 'ui-serif',
-    rounded: 'ui-rounded',
-    mono: 'ui-monospace',
-    heading: 'System',
-    body: 'System',
+    sans: "system-ui",
+    serif: "ui-serif",
+    rounded: "ui-rounded",
+    mono: "ui-monospace",
+    heading: "System",
+    body: "System",
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-    heading: 'sans-serif',
-    body: 'sans-serif',
+    sans: "normal",
+    serif: "serif",
+    rounded: "normal",
+    mono: "monospace",
+    heading: "sans-serif",
+    body: "sans-serif",
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+    rounded:
+      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
     heading: "'Cabinet Grotesk', system-ui, sans-serif",
     body: "'Satoshi', system-ui, sans-serif",

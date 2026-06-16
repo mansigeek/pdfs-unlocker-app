@@ -12,7 +12,7 @@ export default function UnlockTabScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <AppHeader title="Unlock PDF" subtitle="Choose file, enter password, download" />
+      <AppHeader />
       <ScreenScroll style={{ backgroundColor: theme.background }} keyboardShouldPersistTaps="handled">
         <ToolSection />
       </ScreenScroll>

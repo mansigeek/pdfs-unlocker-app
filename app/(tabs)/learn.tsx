@@ -6,6 +6,7 @@ import { AppHeader } from '@/components/pdf-unlocker/AppHeader';
 import { HowItWorks } from '@/components/pdf-unlocker/HowItWorks';
 import { Instructions } from '@/components/pdf-unlocker/Instructions';
 import { ScreenScroll } from '@/components/pdf-unlocker/ScreenScroll';
+import { spacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
 
 export default function LearnTabScreen() {
@@ -13,8 +14,8 @@ export default function LearnTabScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
-      <AppHeader title="Learn" subtitle="How unlocking works" />
-      <ScreenScroll>
+      <AppHeader />
+      <ScreenScroll contentContainerStyle={styles.scrollContent}>
         <HowItWorks />
         <Instructions />
       </ScreenScroll>
@@ -25,5 +26,8 @@ export default function LearnTabScreen() {
 const styles = StyleSheet.create({
   safe: {
     flex: 1,
+  },
+  scrollContent: {
+    gap: spacing.lg,
   },
 });

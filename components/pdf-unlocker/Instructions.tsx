@@ -1,65 +1,107 @@
-import { CheckCircle, Warning } from 'phosphor-react-native';
+import { CheckCircle, Info, Warning } from 'phosphor-react-native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppTheme } from '@/contexts/theme-context';
-import { SectionHeader } from '@/components/pdf-unlocker/SectionHeader';
 import { radius, screen, spacing, textSpacing } from '@/constants/theme';
 
-const steps = [
-  'Tap Upload PDF or select a PDF from the picker.',
-  'If the PDF is protected, enter the correct owner/user password.',
-  'Press Unlock PDF and wait a moment. Most files finish in under 2 seconds.',
-  'Tap Download unlocked PDF to save the file locally.',
-  'Hit Unlock another file to repeat. There are no limits.',
-];
+const GUIDE_MARKER = 24;
+const ROW_GAP = spacing.sm + 4;
 
-const tips = [
-  'The password must match the one used when the PDF was originally protected.',
-  'Supported format: .pdf only. Max file size: 5 MB.',
-  'Some PDFs restrict printing/copying with the same password. Both restrictions are removed when you unlock PDF.',
-  'If the unlock fails, double-check your password and try again.',
-];
+const GUIDE_STEPS = [
+  'Open the Unlock tab and tap Choose PDF File.',
+  'If the file is protected, enter the correct password.',
+  'Tap Unlock PDF and wait a moment for processing.',
+  'Download the unlocked file to your device.',
+  'Use Unlock another file to process more documents.',
+] as const;
+
+const TIPS = [
+  {
+    icon: CheckCircle,
+    title: 'Correct password required',
+    desc: 'The password must match the one used when the PDF was originally protected.',
+  },
+  {
+    icon: Info,
+    title: 'File requirements',
+    desc: 'Supported format: .pdf only. Maximum file size is 5 MB.',
+  },
+  {
+    icon: CheckCircle,
+    title: 'Restrictions removed',
+    desc: 'Printing and copying limits are lifted along with the password when you unlock.',
+  },
+  {
+    icon: Warning,
+    title: 'Troubleshooting',
+    desc: 'If unlocking fails, double-check your password and try again with a smaller file.',
+  },
+] as const;
 
 export function Instructions() {
   const { theme } = useAppTheme();
 
   return (
-    <View
-      testID="instructions-section"
-      style={[styles.section, { borderBottomColor: theme.border, backgroundColor: `${theme.muted}80` }]}
-    >
-      <SectionHeader eyebrow="Instructions" title="Step-by-step guide" />
+    <View testID="instructions-section" style={styles.section}>
+      <View style={[styles.panel, { backgroundColor: theme.card, borderColor: theme.border }]}>
+        <Text style={[styles.panelEyebrow, { color: theme.primary }]}>Guide</Text>
+        <Text style={[styles.panelTitle, { color: theme.foreground }]}>Quick start</Text>
 
-      <View style={styles.steps}>
-        {steps.map((s, i) => (
-          <View key={i} style={styles.stepRow}>
-            <View style={[styles.stepNum, { borderColor: theme.border, backgroundColor: theme.background }]}>
-              <Text style={[styles.stepNumText, { color: theme.foreground }]}>{i + 1}</Text>
+        <View style={styles.guideList}>
+          {GUIDE_STEPS.map((step, index) => (
+            <View
+              key={step}
+              style={[
+                styles.guideRow,
+                index < GUIDE_STEPS.length - 1 && {
+                  borderBottomWidth: 1,
+                  borderBottomColor: theme.border,
+                },
+              ]}
+            >
+              <View style={[styles.guideNum, { backgroundColor: `${theme.primary}12` }]}>
+                <Text style={[styles.guideNumText, { color: theme.primary }]} includeFontPadding={false}>
+                  {index + 1}
+                </Text>
+              </View>
+              <Text style={[styles.guideText, { color: theme.foreground }]} includeFontPadding={false}>
+                {step}
+              </Text>
             </View>
-            <Text style={[styles.stepText, { color: theme.foreground }]}>{s}</Text>
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
 
-      <View style={styles.tipsHeader}>
-        <SectionHeader eyebrow="Good to know" title="Tips & limitations" />
-      </View>
+      <View style={[styles.panel, { backgroundColor: theme.card, borderColor: theme.border }]}>
+        <Text style={[styles.panelEyebrow, { color: theme.primary }]}>Good to know</Text>
+        <Text style={[styles.panelTitle, { color: theme.foreground }]}>Tips & limitations</Text>
 
-      <View style={styles.tips}>
-        {tips.map((t, i) => (
-          <View
-            key={i}
-            style={[styles.tipCard, { borderColor: theme.border, backgroundColor: theme.card }]}
-          >
-            {i === tips.length - 1 ? (
-              <Warning size={20} color={theme.primary} weight="duotone" />
-            ) : (
-              <CheckCircle size={20} color={theme.primary} weight="duotone" />
-            )}
-            <Text style={[styles.tipText, { color: theme.foreground }]}>{t}</Text>
-          </View>
-        ))}
+        <View style={styles.tipList}>
+          {TIPS.map((tip, index) => {
+            const Icon = tip.icon;
+            return (
+              <View
+                key={tip.title}
+                style={[
+                  styles.tipRow,
+                  index < TIPS.length - 1 && {
+                    borderBottomWidth: 1,
+                    borderBottomColor: theme.border,
+                  },
+                ]}
+              >
+                <View style={[styles.tipIcon, { backgroundColor: `${theme.primary}12` }]}>
+                  <Icon size={18} color={theme.primary} weight="duotone" />
+                </View>
+                <View style={styles.tipCopy}>
+                  <Text style={[styles.tipTitle, { color: theme.foreground }]}>{tip.title}</Text>
+                  <Text style={[styles.tipDesc, { color: theme.mutedForeground }]}>{tip.desc}</Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
       </View>
     </View>
   );
@@ -67,52 +109,80 @@ export function Instructions() {
 
 const styles = StyleSheet.create({
   section: {
-    paddingBottom: screen.paddingBottom,
+    gap: spacing.lg,
   },
-  steps: {
-    gap: textSpacing.block,
-    marginBottom: textSpacing.section,
-  },
-  stepRow: {
-    flexDirection: 'row',
-    gap: spacing.md,
-    alignItems: 'flex-start',
-  },
-  stepNum: {
-    width: 32,
-    height: 32,
-    borderRadius: radius.md,
+  panel: {
     borderWidth: 1,
+    borderRadius: screen.cardRadius,
+    padding: screen.cardPadding,
+    gap: textSpacing.block,
+  },
+  panelEyebrow: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+  },
+  panelTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+  },
+  guideList: {
+    marginTop: spacing.xs,
+  },
+  guideRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: ROW_GAP,
+    paddingVertical: spacing.sm + 4,
+  },
+  guideNum: {
+    width: GUIDE_MARKER,
+    height: GUIDE_MARKER,
+    borderRadius: GUIDE_MARKER / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  stepNumText: {
-    fontSize: 14,
+  guideNumText: {
+    fontSize: 13,
     fontWeight: '800',
+    lineHeight: 16,
+    textAlign: 'center',
   },
-  stepText: {
+  guideText: {
     flex: 1,
-    paddingTop: 4,
     fontSize: 14,
-    lineHeight: 22,
+    lineHeight: 20,
   },
-  tipsHeader: {
-    marginTop: textSpacing.section,
+  tipList: {
+    marginTop: spacing.xs,
   },
-  tips: {
-    gap: textSpacing.block,
-  },
-  tipCard: {
+  tipRow: {
     flexDirection: 'row',
-    gap: spacing.sm + 4,
-    borderWidth: 1,
-    borderRadius: radius.md,
-    padding: spacing.md,
     alignItems: 'flex-start',
+    gap: ROW_GAP,
+    paddingVertical: spacing.sm + 4,
   },
-  tipText: {
+  tipIcon: {
+    width: GUIDE_MARKER + 8,
+    height: GUIDE_MARKER + 8,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 0,
+  },
+  tipCopy: {
     flex: 1,
+    gap: 2,
+  },
+  tipTitle: {
     fontSize: 14,
-    lineHeight: 22,
+    fontWeight: '700',
+    lineHeight: 20,
+  },
+  tipDesc: {
+    fontSize: 13,
+    lineHeight: 18,
   },
 });

@@ -1,23 +1,20 @@
-import { Moon, Sun } from 'phosphor-react-native';
+import { LockKey, Moon, Sun } from 'phosphor-react-native';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { screen, textSpacing } from '@/constants/theme';
+import { radius, screen, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
 
-type AppHeaderProps = {
-  title: string;
-  subtitle?: string;
-};
-
-export function AppHeader({ title, subtitle }: AppHeaderProps) {
+export function AppHeader() {
   const { theme, resolvedTheme, toggleTheme } = useAppTheme();
 
   return (
     <View style={[styles.container, { borderBottomColor: theme.border, backgroundColor: theme.background }]}>
-      <View style={styles.textWrap}>
-        <Text style={[styles.title, { color: theme.foreground }]}>{title}</Text>
-        {subtitle ? <Text style={[styles.subtitle, { color: theme.mutedForeground }]}>{subtitle}</Text> : null}
+      <View style={styles.brand}>
+        <View style={[styles.logoIcon, { backgroundColor: theme.primary }]}>
+          <LockKey size={18} color={theme.primaryForeground} weight="bold" />
+        </View>
+        <Text style={[styles.logoText, { color: theme.foreground }]}>PDF Unlocker</Text>
       </View>
       <Pressable
         testID="app-header-theme-toggle"
@@ -45,17 +42,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: screen.gap,
   },
-  textWrap: {
+  brand: {
     flex: 1,
-    gap: textSpacing.titleToBody,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
-  title: {
-    fontSize: 20,
+  logoIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoText: {
+    fontSize: 18,
     fontWeight: '900',
-    letterSpacing: -0.3,
-  },
-  subtitle: {
-    fontSize: 13,
+    letterSpacing: -0.5,
   },
   iconBtn: {
     width: 36,
