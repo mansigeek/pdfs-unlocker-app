@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# PDF Unlocker (React Native)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Mobile app port of the [PDF Unlocker](https://pdfsunlocker.com) web tool — unlock password-protected PDFs on iOS and Android.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Full site parity: Hero, Tool, How it works, Features, About, Instructions, FAQ, Share, Footer
+- PDF pick → verify lock → password → unlock → download/share
+- Light / dark theme with safe-area support on all devices
+- Privacy Policy & Terms of Use screens
 
-   ```bash
-   npm install
-   ```
+## Setup
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1. Install dependencies:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Copy environment variables:
 
-## Learn more
+```bash
+cp .env.example .env
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Set your backend URL in `.env`:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+EXPO_PUBLIC_BACKEND_URL=https://your-backend.run.app
+EXPO_PUBLIC_SITE_URL=https://pdfsunlocker.com
+```
 
-## Join the community
+4. Start the app:
 
-Join our community of developers creating universal apps.
+```bash
+npx expo start
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Then press `i` for iOS simulator or `a` for Android emulator, or scan the QR code with Expo Go.
+
+## Production builds
+
+```bash
+npx expo prebuild
+npx expo run:ios
+npx expo run:android
+```
+
+For store releases, use EAS Build:
+
+```bash
+npx eas build --platform all
+```
+
+## Project structure
+
+- `app/` — Expo Router screens (home, privacy, terms)
+- `components/pdf-unlocker/` — UI sections matching the website
+- `lib/pdf-api.ts` — Backend API (`verify-locked-pdf`, `unlock-pdf`)
+- `constants/theme.ts` — Trust Blue design tokens from the web app

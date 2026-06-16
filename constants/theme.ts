@@ -1,53 +1,130 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
+/** Trust Blue palette — matches Unlock-PDF-main globals.css */
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+function hsl(h: number, s: number, l: number): string {
+  s /= 100;
+  l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color)
+      .toString(16)
+      .padStart(2, '0');
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
 
-export const Colors = {
-  light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
-  },
+export type AppTheme = {
+  background: string;
+  foreground: string;
+  card: string;
+  cardForeground: string;
+  primary: string;
+  primaryForeground: string;
+  primaryHover: string;
+  secondary: string;
+  muted: string;
+  mutedForeground: string;
+  border: string;
+  destructive: string;
+  success: string;
+  input: string;
+};
+
+export const lightTheme: AppTheme = {
+  background: hsl(0, 0, 99),
+  foreground: hsl(240, 10, 4),
+  card: hsl(0, 0, 100),
+  cardForeground: hsl(240, 10, 4),
+  primary: hsl(224, 100, 50),
+  primaryForeground: '#ffffff',
+  primaryHover: hsl(224, 100, 40),
+  secondary: hsl(240, 5, 96),
+  muted: hsl(240, 5, 96),
+  mutedForeground: hsl(240, 4, 46),
+  border: hsl(240, 6, 90),
+  destructive: hsl(0, 84, 60),
+  success: hsl(160, 84, 39),
+  input: hsl(240, 6, 90),
+};
+
+export const darkTheme: AppTheme = {
+  background: hsl(240, 6, 2),
+  foreground: hsl(0, 0, 98),
+  card: hsl(240, 6, 6),
+  cardForeground: hsl(0, 0, 98),
+  primary: hsl(217, 91, 60),
+  primaryForeground: '#ffffff',
+  primaryHover: hsl(217, 91, 50),
+  secondary: hsl(240, 4, 10),
+  muted: hsl(240, 4, 10),
+  mutedForeground: hsl(240, 5, 64),
+  border: hsl(240, 4, 14),
+  destructive: hsl(0, 72, 51),
+  success: hsl(160, 84, 39),
+  input: hsl(240, 4, 14),
+};
+
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+export const radius = {
+  sm: 4,
+  md: 8,
+  lg: 12,
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
+    heading: 'System',
+    body: 'System',
   },
   default: {
     sans: 'normal',
     serif: 'serif',
     rounded: 'normal',
     mono: 'monospace',
+    heading: 'sans-serif',
+    body: 'sans-serif',
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
     rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    heading: "'Cabinet Grotesk', system-ui, sans-serif",
+    body: "'Satoshi', system-ui, sans-serif",
   },
 });
+
+/** @deprecated Use useAppTheme() instead */
+export const Colors = {
+  light: {
+    text: lightTheme.foreground,
+    background: lightTheme.background,
+    tint: lightTheme.primary,
+    icon: lightTheme.mutedForeground,
+    tabIconDefault: lightTheme.mutedForeground,
+    tabIconSelected: lightTheme.primary,
+  },
+  dark: {
+    text: darkTheme.foreground,
+    background: darkTheme.background,
+    tint: darkTheme.primary,
+    icon: darkTheme.mutedForeground,
+    tabIconDefault: darkTheme.mutedForeground,
+    tabIconSelected: darkTheme.primary,
+  },
+};
