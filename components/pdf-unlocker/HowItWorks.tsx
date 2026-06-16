@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppTheme } from '@/contexts/theme-context';
 import { SectionHeader } from '@/components/pdf-unlocker/SectionHeader';
-import { radius, spacing } from '@/constants/theme';
+import { radius, screen, textSpacing } from '@/constants/theme';
 
 const steps = [
   {
@@ -24,7 +24,7 @@ const steps = [
   {
     icon: DownloadSimple,
     title: 'Download unlocked PDF',
-    desc: 'We decrypt in your browser and hand you a clean, unlocked PDF. No storage, no trace. Just a ready-to-use file.',
+    desc: 'We decrypt on your device and save a clean, unlocked PDF. No storage, no trace. Just a ready-to-use file.',
   },
 ];
 
@@ -62,16 +62,15 @@ export function HowItWorks() {
 
 const styles = StyleSheet.create({
   section: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xxl,
+    paddingBottom: screen.paddingBottom,
     borderBottomWidth: 1,
   },
   grid: {
-    gap: spacing.xl,
-    marginTop: spacing.lg,
+    gap: textSpacing.section,
+    marginTop: textSpacing.block,
   },
   step: {
-    gap: spacing.sm,
+    gap: textSpacing.block,
   },
   iconWrap: {
     width: 48,

@@ -20,7 +20,7 @@ const features = [
   {
     icon: Trash,
     title: 'Zero File Storage',
-    desc: 'Nothing is written to disk. Your PDF and password are never persisted or logged anywhere. Once you unlock PDF and close the tab, every trace is gone.',
+    desc: 'Nothing is written to disk. Your PDF and password are never persisted or logged anywhere. Once you unlock PDF and close the app, every trace is gone.',
   },
   {
     icon: Lightning,
@@ -35,7 +35,7 @@ const features = [
   {
     icon: Devices,
     title: 'Works on Every Device',
-    desc: 'Fully responsive and built to work on desktop, tablet, and mobile. Unlock PDF online from any modern browser including Chrome, Safari, Firefox, and Edge.',
+    desc: 'Built to work on phones, tablets, and desktop. Unlock PDFs from anywhere with a clean experience designed for every screen size.',
   },
   {
     icon: LockKeyOpen,

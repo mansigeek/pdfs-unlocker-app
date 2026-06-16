@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { AccordionItem } from '@/components/ui/Accordion';
 import { SectionHeader } from '@/components/pdf-unlocker/SectionHeader';
 import { useAppTheme } from '@/contexts/theme-context';
-import { spacing } from '@/constants/theme';
+import { screen } from '@/constants/theme';
 
 const faqs = [
   {
@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     q: 'Is it safe to upload sensitive documents like bank statements?',
-    a: 'Absolutely. Your file never leaves your device. Our PDF unlocker runs entirely in your browser, meaning no data is transmitted to any external server. Your password and document stay in your browser\'s memory and are cleared once the process is done.',
+    a: 'Absolutely. Your file never leaves your device. No data is transmitted to any external server. Your password and document stay in memory and are cleared once the process is done.',
   },
   {
     q: 'Can this unlock a PDF if I do not know the password?',
@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: 'Does this work on mobile and iPhone?',
-    a: 'Yes. This PDF unlocker online free tool is fully responsive and works on iPhones, Android phones, tablets, and desktops. Any modern browser is supported. Simply open the page and unlock PDF file online from wherever you are.',
+    a: 'Yes. PDF Unlocker is built for mobile first and works on iPhones, Android phones, tablets, and desktops. Open the app and unlock your file from wherever you are.',
   },
   {
     q: 'Why is there no signup or account required?',
@@ -60,8 +60,6 @@ export function Faq() {
 
 const styles = StyleSheet.create({
   section: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xxl,
-    borderBottomWidth: 1,
+    paddingBottom: screen.paddingBottom,
   },
 });

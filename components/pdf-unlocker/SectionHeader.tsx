@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppTheme } from '@/contexts/theme-context';
-import { spacing } from '@/constants/theme';
+import { textSpacing } from '@/constants/theme';
 
 type SectionHeaderProps = {
   eyebrow: string;
@@ -16,17 +16,23 @@ export function SectionHeader({ eyebrow, title, description }: SectionHeaderProp
   return (
     <View style={styles.wrap}>
       <Text style={[styles.eyebrow, { color: theme.primary }]}>{eyebrow}</Text>
-      <Text style={[styles.title, { color: theme.foreground }]}>{title}</Text>
-      {description ? (
-        <Text style={[styles.description, { color: theme.mutedForeground }]}>{description}</Text>
-      ) : null}
+      <View style={styles.titleGroup}>
+        <Text style={[styles.title, { color: theme.foreground }]}>{title}</Text>
+        {description ? (
+          <Text style={[styles.description, { color: theme.mutedForeground }]}>{description}</Text>
+        ) : null}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: {
-    marginBottom: spacing.lg,
+    marginBottom: textSpacing.block,
+    gap: textSpacing.labelToTitle,
+  },
+  titleGroup: {
+    gap: textSpacing.titleToBody,
   },
   eyebrow: {
     fontSize: 11,
@@ -35,14 +41,12 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   title: {
-    marginTop: spacing.sm + 4,
     fontSize: 28,
     fontWeight: '800',
     letterSpacing: -0.8,
     lineHeight: 34,
   },
   description: {
-    marginTop: spacing.sm + 4,
     fontSize: 14,
     lineHeight: 22,
   },

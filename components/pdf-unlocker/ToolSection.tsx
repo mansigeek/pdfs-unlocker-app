@@ -6,8 +6,8 @@ import {
   Eye,
   EyeSlash,
   FilePdf,
-  Info,
   LockKey,
+  LockKeyOpen,
   ShieldCheck,
   UploadSimple,
   Warning,
@@ -20,7 +20,7 @@ import { SectionHeader } from '@/components/pdf-unlocker/SectionHeader';
 import { Button } from '@/components/ui/Button';
 import { Input, Label } from '@/components/ui/Input';
 import { MAX_BYTES, MAX_MB } from '@/constants/config';
-import { radius, spacing } from '@/constants/theme';
+import { radius, screen, spacing, textSpacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
 import { useToast } from '@/contexts/toast-context';
 import { downloadPdf } from '@/lib/file-save';
@@ -256,6 +256,13 @@ export function ToolSection() {
     }
   };
 
+  const unlockButtonLabel = (label = 'Unlock PDF') => (
+    <View style={styles.btnContent}>
+      <LockKeyOpen size={16} color={theme.primaryForeground} weight="bold" />
+      <Text style={[styles.btnLabel, { color: theme.primaryForeground }]}>{label}</Text>
+    </View>
+  );
+
   const renderProcessing = () => {
     const isTransition = toolStep === 'transition';
     const stage = STAGES[stageIndex];
@@ -340,7 +347,7 @@ export function ToolSection() {
       </View>
       <Text style={[styles.successTitle, { color: theme.foreground }]}>File Unlocked</Text>
       <Text style={[styles.successSub, { color: theme.mutedForeground }]}>
-        Your PDF is ready. Download it now — we don't keep a copy.
+        Your PDF is ready. Download it now — we don’t keep a copy.
       </Text>
 
       <Button testID="download-unlocked-button" onPress={handleDownload} style={styles.downloadBtn}>
@@ -369,6 +376,130 @@ export function ToolSection() {
   const renderTool = () => (
     <View style={styles.toolBody}>
       <View
+        style={[
+          styles.dropzone,
+          file ? styles.dropzoneCompact : null,
+          {
+            borderColor: theme.border,
+            backgroundColor: theme.card,
+          },
+        ]}
+      >
+        {!file ? (
+          <>
+            <FilePdf size={40} color={theme.primary} weight="duotone" />
+            <View style={styles.dropTextGroup}>
+              <Text style={[styles.dropTitle, { color: theme.foreground }]}>Select PDF File</Text>
+              <Text style={[styles.dropSub, { color: theme.mutedForeground }]}>
+                Tap to choose a PDF from your device
+              </Text>
+            </View>
+            <Pressable
+              testID="upload-dropzone"
+              onPress={pickFile}
+              style={[styles.chooseBtn, { backgroundColor: theme.primary }]}
+            >
+              <Text style={[styles.chooseBtnText, { color: theme.primaryForeground }]}>Choose PDF File</Text>
+            </Pressable>
+            <Text style={[styles.dropFooter, { color: theme.mutedForeground }]}>
+              Max file size: {MAX_MB}MB
+            </Text>
+          </>
+        ) : (
+          <View style={styles.fileSelectedGroup}>
+            <View style={[styles.fileRow, { borderColor: theme.border, backgroundColor: theme.background }]}>
+              <View style={styles.fileInfo}>
+                <View style={[styles.fileIcon, { backgroundColor: `${theme.primary}1A` }]}>
+                  <FilePdf size={22} color={theme.primary} weight="duotone" />
+                </View>
+                <View style={styles.fileMeta}>
+                  <Text testID="selected-file-name" style={[styles.fileName, { color: theme.foreground }]} numberOfLines={1}>
+                    {file.name}
+                  </Text>
+                  <Text style={[styles.fileSize, { color: theme.mutedForeground }]}>
+                    {formatSize(file.size)} / {MAX_MB} MB max
+                  </Text>
+                  <View style={[styles.fileBar, { backgroundColor: theme.muted }]}>
+                    <View
+                      style={[
+                        styles.fileBarFill,
+                        {
+                          backgroundColor: theme.primary,
+                          width: `${Math.min(100, (file.size / MAX_BYTES) * 100)}%`,
+                        },
+                      ]}
+                    />
+                  </View>
+                </View>
+              </View>
+              <Pressable
+                testID="remove-file-btn"
+                onPress={() => {
+                  setFile(null);
+                  setLockStatus(null);
+                }}
+                style={[styles.removeBtn, { borderColor: theme.border }]}
+                accessibilityLabel="Remove file"
+              >
+                <X size={16} color={theme.mutedForeground} weight="bold" />
+              </Pressable>
+            </View>
+
+            {lockStatus ? (
+              <View style={styles.lockBadgeWrap}>
+                {lockStatus === 'checking' ? (
+                  <View style={[styles.badge, { borderColor: theme.border, backgroundColor: `${theme.muted}80` }]}>
+                    <CircleNotch size={12} color={theme.mutedForeground} weight="bold" />
+                    <Text style={[styles.badgeText, { color: theme.mutedForeground }]}>Verifying PDF protection…</Text>
+                  </View>
+                ) : null}
+                {lockStatus === 'locked' ? (
+                  <View style={[styles.badge, { borderColor: `${theme.primary}4D`, backgroundColor: `${theme.primary}0D` }]}>
+                    <LockKey size={12} color={theme.primary} weight="fill" />
+                    <Text style={[styles.badgeText, { color: theme.primary, fontWeight: '700' }]}>
+                      Password-protected · Ready to unlock
+                    </Text>
+                  </View>
+                ) : null}
+                {lockStatus === 'unlocked' ? (
+                  <View style={[styles.badge, { borderColor: `${theme.success}4D`, backgroundColor: `${theme.success}0D` }]}>
+                    <CheckCircle size={12} color={theme.success} weight="fill" />
+                    <Text style={[styles.badgeText, { color: theme.success, fontWeight: '700' }]}>
+                      Not locked · No unlocking needed
+                    </Text>
+                  </View>
+                ) : null}
+                {lockStatus === 'error' ? (
+                  <View style={[styles.badge, { borderColor: theme.border, backgroundColor: `${theme.muted}80` }]}>
+                    <Warning size={12} color={theme.mutedForeground} weight="fill" />
+                    <Text style={[styles.badgeText, { color: theme.mutedForeground }]}>
+                      Could not verify · You can still try unlocking
+                    </Text>
+                  </View>
+                ) : null}
+              </View>
+            ) : null}
+          </View>
+        )}
+      </View>
+
+      {file && toolStep === 'upload' ? (
+        <View style={styles.unlockCta}>
+          <Button
+            testID="initial-unlock-button"
+            onPress={startPasswordStep}
+            disabled={lockStatus === 'unlocked' || lockStatus === 'checking'}
+            style={styles.bigBtn}
+          >
+            {unlockButtonLabel()}
+          </Button>
+          {lockStatus === 'unlocked' ? (
+            <Text style={[styles.unlockedNote, { color: theme.success }]}>This PDF is already unlocked.</Text>
+          ) : null}
+        </View>
+      ) : null}
+
+      <View
         testID="trust-bar"
         style={[styles.trustBar, { borderColor: theme.border, backgroundColor: `${theme.muted}66` }]}
       >
@@ -387,128 +518,6 @@ export function ToolSection() {
           <Text style={[styles.trustText, { color: theme.foreground }]}>No watermark · No signup</Text>
         </View>
       </View>
-
-      <Pressable
-        testID="upload-dropzone"
-        onPress={pickFile}
-        style={[
-          styles.dropzone,
-          {
-            borderColor: theme.border,
-            backgroundColor: theme.background,
-          },
-        ]}
-      >
-        {!file ? (
-          <>
-            <View style={[styles.dropIcon, { backgroundColor: `${theme.primary}1A` }]}>
-              <UploadSimple size={26} color={theme.primary} weight="bold" />
-            </View>
-            <Text style={[styles.dropTitle, { color: theme.foreground }]}>
-              Tap to select your locked PDF
-            </Text>
-            <Text style={[styles.dropSub, { color: theme.mutedForeground }]}>
-              Choose a PDF from your device
-            </Text>
-            <View style={[styles.dropHint, { borderColor: theme.border, backgroundColor: theme.muted }]}>
-              <Info size={12} color={theme.mutedForeground} weight="bold" />
-              <Text style={[styles.dropHintText, { color: theme.mutedForeground }]}>
-                Max file size {MAX_MB} MB · PDF only
-              </Text>
-            </View>
-          </>
-        ) : (
-          <View style={[styles.fileRow, { borderColor: theme.border, backgroundColor: theme.card }]}>
-            <View style={styles.fileInfo}>
-              <View style={[styles.fileIcon, { backgroundColor: `${theme.primary}1A` }]}>
-                <FilePdf size={22} color={theme.primary} weight="duotone" />
-              </View>
-              <View style={styles.fileMeta}>
-                <Text testID="selected-file-name" style={[styles.fileName, { color: theme.foreground }]} numberOfLines={1}>
-                  {file.name}
-                </Text>
-                <Text style={[styles.fileSize, { color: theme.mutedForeground }]}>
-                  {formatSize(file.size)} / {MAX_MB} MB max
-                </Text>
-                <View style={[styles.fileBar, { backgroundColor: theme.muted }]}>
-                  <View
-                    style={[
-                      styles.fileBarFill,
-                      {
-                        backgroundColor: theme.primary,
-                        width: `${Math.min(100, (file.size / MAX_BYTES) * 100)}%`,
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
-            </View>
-            <Pressable
-              testID="remove-file-btn"
-              onPress={(e) => {
-                e.stopPropagation?.();
-                setFile(null);
-                setLockStatus(null);
-              }}
-              style={[styles.removeBtn, { borderColor: theme.border }]}
-              accessibilityLabel="Remove file"
-            >
-              <X size={16} color={theme.mutedForeground} weight="bold" />
-            </Pressable>
-          </View>
-        )}
-
-        {file && lockStatus ? (
-          <View style={styles.lockBadgeWrap}>
-            {lockStatus === 'checking' ? (
-              <View style={[styles.badge, { borderColor: theme.border, backgroundColor: `${theme.muted}80` }]}>
-                <CircleNotch size={12} color={theme.mutedForeground} weight="bold" />
-                <Text style={[styles.badgeText, { color: theme.mutedForeground }]}>Verifying PDF protection…</Text>
-              </View>
-            ) : null}
-            {lockStatus === 'locked' ? (
-              <View style={[styles.badge, { borderColor: `${theme.primary}4D`, backgroundColor: `${theme.primary}0D` }]}>
-                <LockKey size={12} color={theme.primary} weight="fill" />
-                <Text style={[styles.badgeText, { color: theme.primary, fontWeight: '700' }]}>
-                  Password-protected · Ready to unlock
-                </Text>
-              </View>
-            ) : null}
-            {lockStatus === 'unlocked' ? (
-              <View style={[styles.badge, { borderColor: `${theme.success}4D`, backgroundColor: `${theme.success}0D` }]}>
-                <CheckCircle size={12} color={theme.success} weight="fill" />
-                <Text style={[styles.badgeText, { color: theme.success, fontWeight: '700' }]}>
-                  Not locked · No unlocking needed
-                </Text>
-              </View>
-            ) : null}
-            {lockStatus === 'error' ? (
-              <View style={[styles.badge, { borderColor: theme.border, backgroundColor: `${theme.muted}80` }]}>
-                <Warning size={12} color={theme.mutedForeground} weight="fill" />
-                <Text style={[styles.badgeText, { color: theme.mutedForeground }]}>
-                  Could not verify · You can still try unlocking
-                </Text>
-              </View>
-            ) : null}
-          </View>
-        ) : null}
-      </Pressable>
-
-      {file && toolStep === 'upload' ? (
-        <View style={styles.unlockCta}>
-          <Button
-            testID="initial-unlock-button"
-            onPress={startPasswordStep}
-            disabled={lockStatus === 'unlocked' || lockStatus === 'checking'}
-            style={styles.bigBtn}
-          >
-            🔓 Unlock PDF
-          </Button>
-          {lockStatus === 'unlocked' ? (
-            <Text style={[styles.unlockedNote, { color: theme.success }]}>This PDF is already unlocked.</Text>
-          ) : null}
-        </View>
-      ) : null}
 
       {toolStep === 'password' ? (
         <View style={styles.passwordBlock}>
@@ -567,7 +576,7 @@ export function ToolSection() {
             loading={processing}
             style={styles.submitBtn}
           >
-            {processing ? 'Unlocking…' : '🔓 Unlock PDF'}
+            {processing ? 'Unlocking…' : unlockButtonLabel()}
           </Button>
         </View>
       ) : null}
@@ -581,13 +590,9 @@ export function ToolSection() {
   return (
     <View
       testID="tool-section"
-      style={[styles.section, { borderBottomColor: theme.border, backgroundColor: `${theme.muted}4D` }]}
+      style={[styles.section, { backgroundColor: theme.background }]}
     >
-      <SectionHeader
-        eyebrow="The Tool"
-        title="Unlock your PDF"
-        description="Select a password-protected PDF, enter the password, and download the unlocked copy. Files are processed in memory and never saved to disk."
-      />
+      <SectionHeader eyebrow="The Tool" title="Unlock your PDF" />
 
       <View style={[styles.card, { borderColor: theme.border, backgroundColor: theme.card }]}>
         {result ? renderSuccess() : processing || toolStep === 'transition' ? renderProcessing() : renderTool()}
@@ -597,24 +602,20 @@ export function ToolSection() {
 }
 
 const styles = StyleSheet.create({
-  section: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xxl,
-    borderBottomWidth: 1,
-  },
+  section: {},
   card: {
     borderWidth: 1,
-    borderRadius: radius.lg,
-    padding: spacing.md,
+    borderRadius: screen.cardRadius,
+    padding: screen.cardPadding,
   },
   toolBody: {
-    gap: spacing.lg,
+    gap: textSpacing.section,
   },
   trustBar: {
     borderWidth: 1,
     borderRadius: radius.md,
     padding: spacing.sm + 4,
-    gap: spacing.sm,
+    gap: textSpacing.block,
   },
   trustItem: {
     flexDirection: 'row',
@@ -635,40 +636,49 @@ const styles = StyleSheet.create({
   dropzone: {
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderRadius: radius.md,
-    padding: spacing.lg,
+    borderRadius: screen.cardRadius,
+    padding: spacing.xl,
     alignItems: 'center',
+    width: '100%',
+    gap: textSpacing.section,
   },
-  dropIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+  dropzoneCompact: {
+    padding: screen.cardPadding,
+    gap: 0,
+  },
+  fileSelectedGroup: {
+    width: '100%',
+    gap: textSpacing.block,
+  },
+  dropTextGroup: {
     alignItems: 'center',
-    justifyContent: 'center',
+    gap: textSpacing.titleToBody,
+    width: '100%',
   },
   dropTitle: {
-    marginTop: spacing.md,
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: '800',
     textAlign: 'center',
   },
   dropSub: {
-    marginTop: 4,
     fontSize: 14,
     textAlign: 'center',
+    lineHeight: 20,
   },
-  dropHint: {
-    marginTop: spacing.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    borderWidth: 1,
+  chooseBtn: {
+    width: '100%',
+    minHeight: 48,
     borderRadius: 999,
-    paddingHorizontal: spacing.sm + 4,
-    paddingVertical: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  dropHintText: {
+  chooseBtnText: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  dropFooter: {
     fontSize: 12,
+    textAlign: 'center',
   },
   fileRow: {
     width: '100%',
@@ -696,6 +706,7 @@ const styles = StyleSheet.create({
   fileMeta: {
     flex: 1,
     minWidth: 0,
+    gap: textSpacing.titleToBody,
   },
   fileName: {
     fontSize: 14,
@@ -703,10 +714,8 @@ const styles = StyleSheet.create({
   },
   fileSize: {
     fontSize: 12,
-    marginTop: 2,
   },
   fileBar: {
-    marginTop: 6,
     height: 4,
     borderRadius: 2,
     overflow: 'hidden',
@@ -724,7 +733,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   lockBadgeWrap: {
-    marginTop: spacing.sm,
     alignItems: 'center',
   },
   badge: {
@@ -740,13 +748,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   unlockCta: {
-    alignItems: 'center',
+    alignItems: 'stretch',
     gap: spacing.sm,
-    paddingVertical: spacing.sm,
   },
   bigBtn: {
     width: '100%',
-    minHeight: 56,
+    minHeight: 42,
   },
   unlockedNote: {
     fontSize: 14,
@@ -789,6 +796,16 @@ const styles = StyleSheet.create({
   submitBtn: {
     marginTop: spacing.sm,
     width: '100%',
+    minHeight: 42,
+  },
+  btnContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  btnLabel: {
+    fontSize: 15,
+    fontWeight: '700',
   },
   disclaimer: {
     fontSize: 12,

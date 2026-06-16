@@ -9,7 +9,7 @@ import { SITE_URL } from '@/constants/config';
 import { radius, spacing } from '@/constants/theme';
 
 const TWEET_TEMPLATE =
-  'Unlock any PDF for free — no signup, no upload, runs entirely in your browser:';
+  'Unlock any PDF for free — no signup, no upload, runs entirely on your device:';
 
 export function ShareSection() {
   const { theme } = useAppTheme();

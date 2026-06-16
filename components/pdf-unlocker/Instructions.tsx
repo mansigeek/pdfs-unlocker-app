@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppTheme } from '@/contexts/theme-context';
 import { SectionHeader } from '@/components/pdf-unlocker/SectionHeader';
-import { radius, spacing } from '@/constants/theme';
+import { radius, screen, spacing, textSpacing } from '@/constants/theme';
 
 const steps = [
   'Tap Upload PDF or select a PDF from the picker.',
@@ -67,13 +67,11 @@ export function Instructions() {
 
 const styles = StyleSheet.create({
   section: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xxl,
-    borderBottomWidth: 1,
+    paddingBottom: screen.paddingBottom,
   },
   steps: {
-    gap: spacing.md,
-    marginBottom: spacing.xl,
+    gap: textSpacing.block,
+    marginBottom: textSpacing.section,
   },
   stepRow: {
     flexDirection: 'row',
@@ -99,10 +97,10 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   tipsHeader: {
-    marginTop: spacing.lg,
+    marginTop: textSpacing.section,
   },
   tips: {
-    gap: spacing.md,
+    gap: textSpacing.block,
   },
   tipCard: {
     flexDirection: 'row',

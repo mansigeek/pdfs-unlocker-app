@@ -21,12 +21,12 @@ export function About() {
 
       <Text style={[styles.body, { color: theme.mutedForeground }]}>
         <Text style={{ fontWeight: '600', color: theme.foreground }}>PDF Unlocker</Text> is a free,
-        browser-first utility that removes password protection from PDF files you already have permission
+        mobile-first utility that removes password protection from PDF files you already have permission
         to access. We made it because existing tools bury the core feature behind signups, quotas, or
         intrusive ads.
       </Text>
       <Text style={[styles.body, { color: theme.mutedForeground }]}>
-        Every unlock happens right in your browser. Your document is never sent to a server, never saved
+        Every unlock happens right on your device. Your document is never sent to a server, never saved
         to disk, never logged, and is cleared from memory the moment the process is done.
       </Text>
 

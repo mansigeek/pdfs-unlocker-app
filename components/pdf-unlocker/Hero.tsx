@@ -1,4 +1,4 @@
-import { ArrowDown, FilePdf, LockKeyOpen, ShieldCheck } from 'phosphor-react-native';
+import { FilePdf, LockKeyOpen, ShieldCheck } from 'phosphor-react-native';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -36,8 +36,8 @@ export function Hero({ onScrollToTool }: HeroProps) {
       </Text>
 
       <Text style={[styles.subtitle, { color: theme.mutedForeground }]}>
-        Remove passwords and restrictions from PDF files completely in your browser. Your file never
-        touches a server. Free forever, no account needed.
+        Remove passwords and restrictions from PDF files right on your device. Your file never touches
+        a server. Free forever, no account needed.
       </Text>
 
       <View style={styles.ctaRow}>

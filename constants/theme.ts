@@ -82,6 +82,28 @@ export const radius = {
   lg: 12,
 };
 
+/** Consistent screen/content spacing for all tab pages */
+export const screen = {
+  paddingX: spacing.md,
+  paddingTop: spacing.md,
+  paddingBottom: spacing.lg,
+  gap: spacing.md,
+  cardRadius: radius.lg,
+  cardPadding: spacing.md,
+};
+
+/** Consistent vertical spacing between text elements */
+export const textSpacing = {
+  /** Title → subtitle / description (e.g. "Select PDF File" → helper text) */
+  titleToBody: spacing.xs,
+  /** Eyebrow / label → heading */
+  labelToTitle: spacing.sm,
+  /** Between stacked text blocks in a card */
+  block: spacing.sm,
+  /** Between major UI blocks (icon, card section, button) */
+  section: spacing.md,
+};
+
 export const Fonts = Platform.select({
   ios: {
     sans: 'system-ui',

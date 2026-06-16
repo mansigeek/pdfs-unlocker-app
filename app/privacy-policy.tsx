@@ -1,13 +1,11 @@
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ArrowLeft } from 'phosphor-react-native';
 
-import { Footer } from '@/components/pdf-unlocker/Footer';
-import { Navbar } from '@/components/pdf-unlocker/Navbar';
 import { SUPPORT_EMAIL } from '@/constants/config';
-import { spacing } from '@/constants/theme';
+import { screen, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
 
 export default function PrivacyPolicyScreen() {
@@ -18,13 +16,18 @@ export default function PrivacyPolicyScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: theme.background }]} edges={['top', 'left', 'right']}>
       <Stack.Screen options={{ headerShown: false }} />
-      <Navbar onScrollTo={() => router.push('/')} />
-      <Pressable onPress={() => router.back()} style={styles.back}>
+      <Pressable onPress={() => router.back()} style={[styles.back, { paddingHorizontal: screen.paddingX }]}>
         <ArrowLeft size={18} color={theme.primary} weight="bold" />
         <Text style={[styles.backText, { color: theme.primary }]}>Back</Text>
       </Pressable>
 
-      <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 24, paddingHorizontal: spacing.md }}>
+      <ScrollView
+        contentContainerStyle={{
+          paddingBottom: insets.bottom + screen.paddingBottom,
+          paddingHorizontal: screen.paddingX,
+          paddingTop: screen.paddingTop,
+        }}
+      >
         <Text style={[styles.title, { color: theme.foreground }]}>Privacy Policy</Text>
 
         <Text style={[styles.body, { color: theme.mutedForeground }]}>
@@ -34,14 +37,14 @@ export default function PrivacyPolicyScreen() {
 
         <Text style={[styles.heading, { color: theme.foreground }]}>1. Information We Collect</Text>
         <Text style={[styles.body, { color: theme.mutedForeground }]}>
-          When you use our service, your PDF files are processed entirely within your browser. We do not
+          When you use our service, your PDF files are processed entirely on your device. We do not
           upload, store, or transmit your PDF files or passwords to our servers. All processing is done
           locally on your device to ensure maximum privacy and security.
         </Text>
 
         <Text style={[styles.heading, { color: theme.foreground }]}>2. Local Storage</Text>
         <Text style={[styles.body, { color: theme.mutedForeground }]}>
-          We may use your device's local storage to save your theme preferences (e.g., light or dark mode).
+          We may use your device’s local storage to save your theme preferences (e.g., light or dark mode).
           This data never leaves your device and is not shared with any third parties.
         </Text>
 
@@ -62,8 +65,6 @@ export default function PrivacyPolicyScreen() {
         <Text style={[styles.body, { color: theme.mutedForeground }]}>
           If you have any questions about this Privacy Policy, please contact us at {SUPPORT_EMAIL}.
         </Text>
-
-        <Footer />
       </ScrollView>
     </SafeAreaView>
   );
@@ -75,8 +76,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingVertical: screen.paddingTop,
   },
   backText: { fontSize: 14, fontWeight: '600' },
   title: {
