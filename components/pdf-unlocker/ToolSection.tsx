@@ -387,7 +387,7 @@ export function ToolSection() {
       >
         {!file ? (
           <>
-            <FilePdf size={40} color={theme.primary} weight="duotone" />
+            <FilePdf size={44} color={theme.primary} weight="duotone" />
             <View style={styles.dropTextGroup}>
               <Text style={[styles.dropTitle, { color: theme.foreground }]}>Select PDF File</Text>
               <Text style={[styles.dropSub, { color: theme.mutedForeground }]}>
@@ -637,10 +637,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'dashed',
     borderRadius: screen.cardRadius,
-    padding: spacing.xl,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md + spacing.xs,
     alignItems: 'center',
     width: '100%',
-    gap: textSpacing.section,
+    gap: textSpacing.block,
   },
   dropzoneCompact: {
     padding: screen.cardPadding,
@@ -656,7 +657,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   dropTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '800',
     textAlign: 'center',
   },
@@ -664,16 +665,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
   },
   chooseBtn: {
-    width: '100%',
-    minHeight: 48,
-    borderRadius: 999,
+    alignSelf: 'center',
+    width: '90%',
+    minHeight: 44,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
   chooseBtnText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '700',
   },
   dropFooter: {
