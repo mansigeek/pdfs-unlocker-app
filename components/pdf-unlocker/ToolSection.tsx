@@ -23,7 +23,7 @@ import { MAX_BYTES, MAX_MB } from '@/constants/config';
 import { radius, spacing } from '@/constants/theme';
 import { useAppTheme } from '@/contexts/theme-context';
 import { useToast } from '@/contexts/toast-context';
-import { saveAndSharePdf } from '@/lib/file-save';
+import { downloadPdf } from '@/lib/file-save';
 import { formatSize, wait } from '@/lib/format';
 import { PickedFile, unlockPdf, verifyPdfLock } from '@/lib/pdf-api';
 
@@ -249,7 +249,8 @@ export function ToolSection() {
   const handleDownload = async () => {
     if (!result) return;
     try {
-      await saveAndSharePdf(result.data, result.filename);
+      const message = await downloadPdf(result.data, result.filename);
+      showToast(message, 'success');
     } catch {
       showToast('Could not save the PDF. Please try again.', 'error');
     }
