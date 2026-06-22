@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { File, Paths } from 'expo-file-system';
+import { Directory, File } from 'expo-file-system';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Platform } from 'react-native';
 
@@ -76,7 +76,8 @@ async function downloadPdfAndroid(data: ArrayBuffer, filename: string): Promise<
 
 async function downloadPdfIos(data: ArrayBuffer, filename: string): Promise<void> {
   const safeName = sanitizeFilename(filename);
-  const file = new File(Paths.document, safeName);
+  const directory = await Directory.pickDirectoryAsync();
+  const file = new File(directory.uri, safeName);
   file.create({ overwrite: true });
   file.write(new Uint8Array(data));
 }
@@ -95,5 +96,5 @@ export async function downloadPdf(data: ArrayBuffer, filename: string): Promise<
   }
 
   await downloadPdfIos(data, safeName);
-  return 'PDF saved to Files.';
+  return 'PDF saved to selected folder.';
 }
